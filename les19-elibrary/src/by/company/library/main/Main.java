@@ -15,7 +15,7 @@ public class Main {
 				+ "Allowed commands ([] - for optional with default values):\n"
 				+ "ADDBOOK [title = Unknown] [price = 0] [role = JUNIOR]\n"
 				+ "LOGIN login password\n"
-				+ "SIGNIN login password\n"
+				+ "SIGNUP login password\n"
 				+ "CHANGEROLE target_user_login [new_role = ADULT]\n"
 				+ "SHOWLIB\n");
 		
