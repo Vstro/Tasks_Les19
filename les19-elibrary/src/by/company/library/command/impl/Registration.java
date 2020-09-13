@@ -17,7 +17,7 @@ public class Registration implements Command {
 		if (params.length > 2) {
 			login = params[2];
 		} else {
-			throw new CommandException("There is no login!!");
+			throw new CommandException("There is no login!");
 		}
 		if (params.length > 3) {
 			password = params[3];
