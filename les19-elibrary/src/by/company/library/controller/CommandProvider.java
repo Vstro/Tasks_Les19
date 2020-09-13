@@ -16,7 +16,7 @@ final class CommandProvider {
 
 	CommandProvider() {
 		commands.put("LOGIN", new Logination());
-		commands.put("SIGNIN", new Registration());
+		commands.put("SIGNUP", new Registration());
 		commands.put("ADDBOOK", new AddNewBook());
 		commands.put("CHANGEROLE", new ChangeUserRole());
 		commands.put("SHOWLIB", new ShowLibrary());
