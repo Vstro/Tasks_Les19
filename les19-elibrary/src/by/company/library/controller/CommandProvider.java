@@ -1,4 +1,4 @@
-﻿package by.company.library.controller;
+package by.company.library.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ final class CommandProvider {
 	Command getCommand(String commandName) throws CommandException {
 		Command command = commands.get(commandName);
 		if (command == null) {
-			throw new CommandException();
+			throw new CommandException("Incorrect command name!");
 		}
 		return command;
 	}

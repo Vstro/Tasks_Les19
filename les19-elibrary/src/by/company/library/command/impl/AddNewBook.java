@@ -26,7 +26,11 @@ public class AddNewBook implements Command{
 			}
 		}
 		if (params.length > 4) {
-			access = Role.valueOf(params[4]);
+			try {
+				access = Role.valueOf(params[4]);
+			} catch (IllegalArgumentException e) {
+				throw new CommandException("UnrecognizableRole", e);
+			}
 		}
 		
 		try {
