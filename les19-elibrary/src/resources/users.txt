@@ -1,0 +1,3 @@
+Vlad 12345 ADULT 
+Admin qwe ADULT 
+guest guest JUNIOR
