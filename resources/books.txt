@@ -1,0 +1,7 @@
+JAVA 150 JUNIOR
+C++ 130 ADULT
+Unknown 0 JUNIOR
+C# 110 JUNIOR
+Alice_in_the_Wonderland 100 JUNIOR
+Atrocity 120 ADULT
+
