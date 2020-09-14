@@ -17,12 +17,14 @@ import by.company.library.dao.exception.DAOException;
 
 public class BookDaoImpl implements BookDao {
 
+	private final static string bookFileName = "books.txt";
+	
 	@Override
 	public void addBook(Book book) throws DAOException {
 		FileWriter out;
 		
 		try {
-			out = new FileWriter("books.txt", true); // При создании пишет в конец файла, если второй аргумент == true
+			out = new FileWriter(bookFileName, true); // При создании пишет в конец файла, если второй аргумент == true
 		} catch (IOException e) {
 			throw new DAOException(e);
 		}
@@ -40,7 +42,7 @@ public class BookDaoImpl implements BookDao {
 		FileReader reader;
 		
 		try {
-			reader = new FileReader("books.txt");
+			reader = new FileReader(bookFileName);
 		} catch (FileNotFoundException e) {
 			throw new DAOException("FileNotFound", e);
 		}
