@@ -16,13 +16,15 @@ import by.company.library.dao.exception.DAOException;
 
 public class UserDaoImpl implements UserDao{
 	
+	private final static string userFileName = "users.txt";
+	
 	@Override
 	public User registerUser(String login, String password) throws DAOException {
 		// Сначала проверяем нет ли уже пользователя с таким логином
 		FileReader reader;
 		
 		try {
-			reader = new FileReader("users.txt");
+			reader = new FileReader(userFileName);
 		} catch (FileNotFoundException e) {
 			throw new DAOException("FileNotFound", e);
 		}
@@ -82,7 +84,7 @@ public class UserDaoImpl implements UserDao{
 		FileWriter out;
 		
 		try {
-			out = new FileWriter("users.txt", true);
+			out = new FileWriter(userFileName, true);
 		} catch (IOException e) {
 			throw new DAOException("FileNotFound", e);
 		}
@@ -101,7 +103,7 @@ public class UserDaoImpl implements UserDao{
 		FileReader reader;
 		
 		try {
-			reader = new FileReader("users.txt");
+			reader = new FileReader(userFileName);
 		} catch (FileNotFoundException e) {
 			throw new DAOException("FileNotFound", e);
 		}
@@ -163,7 +165,7 @@ public class UserDaoImpl implements UserDao{
 		RandomAccessFile raf;
 		
 		try {
-			raf = new RandomAccessFile("users.txt", "rw");
+			raf = new RandomAccessFile(userFileName, "rw");
 		} catch (FileNotFoundException e) {
 			throw new DAOException("FileNotFound", e);
 		}
