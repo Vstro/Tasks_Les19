@@ -17,105 +17,85 @@ import by.company.library.dao.exception.DAOException;
 
 public class BookDaoImpl implements BookDao {
 
-	private final static string bookFileName = "books.txt";
+	private static final String BOOK_FILE_NAME = "books.txt";
 	
 	@Override
-	public void addBook(Book book) throws DAOException {
+	public void add(Book book) throws DAOException {
 		FileWriter out;
+		BufferedWriter bw = null;
+		PrintWriter pw = null;
 		
 		try {
-			out = new FileWriter(bookFileName, true); // При создании пишет в конец файла, если второй аргумент == true
+			
+			out = new FileWriter(BOOK_FILE_NAME, true);
+			bw = new BufferedWriter(out);
+			pw = new PrintWriter(bw);
+			pw.println(book.getTitle() + " " + book.getPrice() + " " + book.getAccess());
+			
 		} catch (IOException e) {
-			throw new DAOException(e);
-		}
-		
-		BufferedWriter bw = new BufferedWriter(out);
-		PrintWriter pw = new PrintWriter(bw);
-		
-		pw.println(book.getTitle() + " " + book.getPrice() + " " + book.getAccess());
-		pw.close();
+			throw new DAOException("IOError", e);
+		} finally {
+			pw.close(); // Не кидает Exception, как ни странно
+		}	
 	}
 
 	@Override
-	public List<Book> showLibrary(Role access) throws DAOException {
+	public List<Book> allLibrary(Role access) throws DAOException {
 		List<Book> books = new ArrayList<Book>();
-		FileReader reader;
+		FileReader reader = null;
+		BufferedReader br = null;
 		
 		try {
-			reader = new FileReader(bookFileName);
+			reader = new FileReader(BOOK_FILE_NAME);
+			
+			br = new BufferedReader(reader);
+			
+			// Читаем первую строку
+			String line;
+			line = br.readLine();
+			
+			String[] params;
+			if (access.equals(Role.ADULT)) {
+				while(line != null) {
+					// Добавляем книгу
+					params = line.split("\\s+");
+					String title = params[0];
+					int price = Integer.parseInt(params[1]);
+					books.add(new Book(title, price));
+					
+					// Читаем следующую запись
+					line = br.readLine();
+				}			
+			} else {
+				while(line != null) {
+					// Проверяем доступна ли книга для JUNIOR
+					params = line.split("\\s+");
+					String title = params[0];
+					int price = Integer.parseInt(params[1]);
+					String bookAccess = params[2];
+					
+					if (bookAccess.equals(Role.JUNIOR.toString())) {
+						// Добавляем книгу;
+						books.add(new Book(title, price));
+					}
+					
+					// Читаем следующую запись
+					line = br.readLine();
+				}
+			}
 		} catch (FileNotFoundException e) {
 			throw new DAOException("FileNotFound", e);
-		}
-		
-		BufferedReader br = new BufferedReader(reader);
-				
-		// Читаем первую строку
-		String line;
-		try {
-			line = br.readLine();
 		} catch (IOException e) {
+			throw new DAOException("IOError", e);
+		} catch (NumberFormatException e) {
+			throw new DAOException("ParseIntError", e);
+		} finally {		
 			// Закрываем поток перед выходом из метода
 			try {
 				br.close();
 			} catch (IOException e1) {
-				throw new DAOException("TwiceIOError", e);
+				throw new DAOException("IOClosingError", e1);
 			}
-			
-			throw new DAOException("IOError", e);
-		}
-		
-		String[] params;
-		if (access.equals(Role.ADULT)) {
-			while(line != null) {
-				// Добавляем книгу
-				params = line.split("\\s+");
-				books.add(new Book(params[0], Integer.parseInt(params[1])));
-				
-				// Читаем следующую запись
-				try {
-					line = br.readLine();
-				} catch (IOException e) {
-					// Закрываем поток перед выходом из метода
-					try {
-						br.close();
-					} catch (IOException e1) {
-						throw new DAOException("TwiceIOError", e);
-					}
-					
-					throw new DAOException("IOError", e);
-				}
-			}			
-		} else {
-			String bookAccess;
-			while(line != null) {
-				// Проверяем доступна ли книга для JUNIOR
-				params = line.split("\\s+");
-				bookAccess = params[2];
-				if (bookAccess.equals(access.toString())) {
-					// Добавляем книгу);
-					books.add(new Book(params[0], Integer.parseInt(params[1])));
-				}
-				
-				// Читаем следующую запись
-				try {
-					line = br.readLine();
-				} catch (IOException e) {
-					// Закрываем поток перед выходом из метода
-					try {
-						br.close();
-					} catch (IOException e1) {
-						throw new DAOException("TwiceIOError", e);
-					}
-					
-					throw new DAOException("IOError", e);
-				}
-			}
-		}
-		
-		try {
-			br.close();
-		} catch (IOException e) {
-			throw new DAOException("IOClosingError", e);
 		}
 		
 		return books;

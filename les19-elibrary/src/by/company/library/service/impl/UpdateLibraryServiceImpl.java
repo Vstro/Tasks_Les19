@@ -16,7 +16,7 @@ public class UpdateLibraryServiceImpl implements UpdateLibraryService {
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		
 		try {
-			daoFactory.getBookDAO().addBook(new Book(title, price, access));
+			daoFactory.getBookDAO().add(new Book(title, price, access));
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}	
@@ -28,7 +28,7 @@ public class UpdateLibraryServiceImpl implements UpdateLibraryService {
 		List<Book> books;
 		
 		try {
-			books = daoFactory.getBookDAO().showLibrary(access);
+			books = daoFactory.getBookDAO().allLibrary(access);
 		} catch (DAOException e) {
 			throw new ServiceException(e);
 		}

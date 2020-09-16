@@ -15,26 +15,23 @@ public class AddNewBook implements Command{
 		int price = 0;
 		Role access = Role.JUNIOR;
 		
-		if (params.length > 2) {
-			title = params[2];
-		}
-		if (params.length > 3) {
-			try {
-				price = Integer.parseInt(params[3]);
-			} catch (NumberFormatException e) {
-				throw new CommandException("Incorrect book price!", e);
-			}
-		}
-		if (params.length > 4) {
-			try {
-				access = Role.valueOf(params[4]);
-			} catch (IllegalArgumentException e) {
-				throw new CommandException("UnrecognizableRole", e);
-			}
-		}
-		
 		try {
+			if (params.length > 2) {
+				title = params[2];
+			}
+			if (params.length > 3) {			
+				price = Integer.parseInt(params[3]);			
+			}
+			if (params.length > 4) {			
+				access = Role.valueOf(params[4]);			
+			}		
+		
 			ServiceFactory.getInstance().getUpdateLibraryService().addNewBook(title, price, access);
+		
+		} catch (NumberFormatException e) {
+			throw new CommandException("Incorrect book price!", e);
+		} catch (IllegalArgumentException e) {
+			throw new CommandException("UnrecognizableRole", e);		
 		} catch (ServiceException e) {
 			throw new CommandException(e);
 		}

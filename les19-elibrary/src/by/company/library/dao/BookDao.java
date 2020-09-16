@@ -7,6 +7,6 @@ import by.company.library.bean.Role;
 import by.company.library.dao.exception.DAOException;
 
 public interface BookDao {	
-	public void addBook(Book book) throws DAOException;
-	public List<Book> showLibrary(Role access) throws DAOException;
+	public void add(Book book) throws DAOException;
+	public List<Book> allLibrary(Role access) throws DAOException;
 }

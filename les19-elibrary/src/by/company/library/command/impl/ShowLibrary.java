@@ -15,16 +15,15 @@ public class ShowLibrary implements Command {
 	public String execute(String request) throws CommandException {
 		String[] params = request.split("\\s+");
 		Role access = Role.JUNIOR;
+		List<Book> books;
 		
 		try {
-			access = Role.valueOf(params[0]);
+			access = Role.valueOf(params[0]);				
+				
+			books = ServiceFactory.getInstance().getUpdateLibraryService().showLibrary(access);
+			
 		} catch (IllegalArgumentException e) {
 			throw new CommandException("UnrecognizableRole", e);
-		}
-		
-		List<Book> books;
-		try {
-			books = ServiceFactory.getInstance().getUpdateLibraryService().showLibrary(access);
 		} catch (ServiceException e) {
 			throw new CommandException(e);
 		}

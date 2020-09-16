@@ -9,7 +9,7 @@ public class Controller {
 	public String doAction(String request){
 		String commandName = request.split("\\s+")[1];
 		String response = request.split("\\s+")[0];
-				
+		
 		try {
 			Command command = provider.getCommand(commandName);
 			response = command.execute(request);

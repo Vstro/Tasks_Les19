@@ -13,35 +13,30 @@ public class ChangeUserRole implements Command {
 		String[] params = request.split("\\s+");
 		Role accessRole = Role.JUNIOR;
 		Role targetRole = Role.ADULT;
+		String targetUserLogin;
+		boolean success;
 		
 		try {
 			accessRole = Role.valueOf(params[0]);
+				
+			if (!accessRole.equals(Role.ADULT)) {
+				return params[0] + " This command can't be executed with your access!";
+			}
+					
+			if (params.length > 2) {
+				targetUserLogin = params[2];
+			} else {
+				throw new CommandException("There is no target user login!");
+			}
+		
+			if (params.length > 3) {	
+				targetRole = Role.valueOf(params[3]);
+			}
+				
+			success = ServiceFactory.getInstance().getUserService().changeUserRole(targetUserLogin, targetRole);
+			
 		} catch (IllegalArgumentException e) {
 			throw new CommandException("UnrecognizableRole", e);
-		}
-		
-		if (!accessRole.equals(Role.ADULT)) {
-			return params[0] + " This command can't be executed with your access!";
-		}
-		
-		String targetUserLogin;
-		if (params.length > 2) {
-			targetUserLogin = params[2];
-		} else {
-			throw new CommandException("There is no target user login!");
-		}
-		
-		if (params.length > 3) {
-			try {
-				targetRole = Role.valueOf(params[3]);
-			} catch (IllegalArgumentException e) {
-				throw new CommandException("UnrecognizableRole", e);
-			}
-		}
-		
-		boolean success;
-		try {
-			success = ServiceFactory.getInstance().getUserService().changeUserRole(targetUserLogin, targetRole);
 		} catch (ServiceException e) {
 			throw new CommandException(e);
 		}
