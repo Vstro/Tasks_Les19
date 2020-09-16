@@ -35,7 +35,9 @@ public class BookDaoImpl implements BookDao {
 		} catch (IOException e) {
 			throw new DAOException("IOError", e);
 		} finally {
-			pw.close(); // Не кидает Exception, как ни странно
+			if (pw != null) {
+				pw.close(); // Не кидает Exception, как ни странно
+			}
 		}	
 	}
 
@@ -92,7 +94,9 @@ public class BookDaoImpl implements BookDao {
 		} finally {		
 			// Закрываем поток перед выходом из метода
 			try {
-				br.close();
+				if (br != null) {
+					br.close();
+				}
 			} catch (IOException e1) {
 				throw new DAOException("IOClosingError", e1);
 			}

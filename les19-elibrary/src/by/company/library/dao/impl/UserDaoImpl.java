@@ -61,9 +61,10 @@ public class UserDaoImpl implements UserDao{
 		} catch (IOException e) {
 			throw new DAOException("IOError", e);
 		} finally {
-			// Закрываем поток перед выходом из метода
-			try {
-				pw.close(); // Не бросает исключений, как ни странно
+			// Закрываем потоки перед выходом из метода
+			pw.close(); // Не бросает исключений, как ни странно
+			
+			try {			
 				br.close();
 			} catch (IOException e1) {
 				throw new DAOException("IOClosingError", e1);
@@ -163,7 +164,9 @@ public class UserDaoImpl implements UserDao{
 		} finally {
 			// Закрываем поток перед выходом из метода
 			try {
-				raf.close();
+				if (raf != null) {
+					raf.close();
+				}
 			} catch (IOException e1) {
 				throw new DAOException("IOClosingError", e1);
 			}
